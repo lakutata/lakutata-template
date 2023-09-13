@@ -1,7 +1,7 @@
+import Config from '../config/Config'
 import {Application, Logger} from 'lakutata'
-import Config from './config/Config'
 
-Application.run(Config('production')).then((app: Application) => {
+Application.run(Config('development')).then((app: Application) => {
     Logger.info('')//todo
 }).catch(error => {
     Logger.error(error)
