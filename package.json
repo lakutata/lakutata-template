@@ -10,5 +10,8 @@
     "lakutata"
   ],
   "author": "Lakutata",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "lakutata": "^0.1.3"
+  }
 }

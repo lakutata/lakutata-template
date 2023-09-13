@@ -194,3 +194,4 @@ obj/
 *.ear
 hs_err_pid*
 .idea/mongoSettings.xml
+package-lock.json
