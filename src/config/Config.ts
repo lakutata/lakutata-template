@@ -1,5 +1,7 @@
-import {Application, ApplicationOptions} from 'lakutata'
+import {Application, ApplicationOptions, Logger} from 'lakutata'
 import {CommandLineController} from '../controllers/CommandLineController'
+import {CLI} from '../components/CLI'
+import {Command, Option} from 'commander'
 
 export default function (mode: 'development' | 'production'): ApplicationOptions {
     return {
@@ -14,7 +16,15 @@ export default function (mode: 'development' | 'production'): ApplicationOptions
             /* Config entries here */
         },
         components: {
-            /* Config components here */
+            cli: {
+                class: CLI,
+                commands: [
+                    //Register command here
+                    new Command('hello')
+                        .description('Will echo world')
+                        .addOption(new Option('-u, --user <user>', 'user info'))
+                ]
+            }
         },
         controllers: [CommandLineController],
         autoload: [
@@ -25,8 +35,14 @@ export default function (mode: 'development' | 'production'): ApplicationOptions
         },
         bootstrap: [
             async (app: Application): Promise<void> => {
-            
-                await app.dispatchToController(CommandLineController)
+                const cli: CLI = await app.get<CLI>('cli')
+                const result: any = await app.dispatchToController(await cli.parse(), {
+                    context: {
+                        /* Other Params */
+                    }
+                })
+                //output result to command line
+                Logger.info(result)
             }
         ]
     }
