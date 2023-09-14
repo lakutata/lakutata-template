@@ -20,7 +20,7 @@
   "author": "Lakutata",
   "license": "ISC",
   "dependencies": {
-    "lakutata": "^0.1.10"
+    "lakutata": "^0.1.16"
   },
   "devDependencies": {
     "@types/node": "^18.17.0",
