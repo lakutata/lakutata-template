@@ -1,8 +1,8 @@
 {
-  "name": "lakutata-template",
+  "name": "{name}",
   "version": "0.0.1",
-  "description": "Lakutata Template",
-  "main": "index.js",
+  "description": "{description}",
+  "main": "build/App.js",
   "scripts": {
     "clean": "shx rm -rf ./build",
     "build": "tsc",
@@ -17,8 +17,8 @@
   "engines": {
     "node": ">=18"
   },
-  "author": "Lakutata",
-  "license": "ISC",
+  "author": "{author}",
+  "license": "{license}",
   "dependencies": {
     "lakutata": "^0.1.16"
   },
