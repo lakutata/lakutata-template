@@ -1,4 +1,5 @@
-import {ApplicationOptions} from 'lakutata'
+import {Application, ApplicationOptions} from 'lakutata'
+import {CommandLineController} from '../controllers/CommandLineController'
 
 export default function (mode: 'development' | 'production'): ApplicationOptions {
     return {
@@ -15,14 +16,18 @@ export default function (mode: 'development' | 'production'): ApplicationOptions
         components: {
             /* Config components here */
         },
-        controllers: [
-            /* Config controllers here */
-        ],
+        controllers: [CommandLineController],
         autoload: [
             /* Config autoload items here */
         ],
         modules: {
             /* Config modules here */
-        }
+        },
+        bootstrap: [
+            async (app: Application): Promise<void> => {
+            
+                await app.dispatchToController(CommandLineController)
+            }
+        ]
     }
 }

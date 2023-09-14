@@ -1,8 +1,11 @@
 {
-  "name": "lakutata-template",
+  "name": "{name}",
   "version": "0.0.1",
-  "description": "Lakutata Template",
-  "main": "index.js",
+  "description": "{description}",
+  "main": "build/App.js",
+  "bin": {
+    "{name}": "build/App.js"
+  },
   "scripts": {
     "clean": "shx rm -rf ./build",
     "build": "tsc",
@@ -12,14 +15,16 @@
     "test": "ts-node src/tests/App.spec.ts"
   },
   "keywords": [
-    "lakutata"
+    "lakutata",
+    "cli"
   ],
   "engines": {
     "node": ">=18"
   },
-  "author": "Lakutata",
-  "license": "ISC",
+  "author": "{author}",
+  "license": "{license}",
   "dependencies": {
+    "commander": "^11.0.0",
     "lakutata": "^0.1.16"
   },
   "devDependencies": {
