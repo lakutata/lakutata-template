@@ -12,7 +12,9 @@
     "rebuild": "npm run clean && npm run build",
     "prepare": "npm run compile",
     "compile": "npm run rebuild",
-    "test": "ts-node src/tests/App.spec.ts"
+    "test": "ts-node src/tests/App.spec.ts",
+    "cli:link": "npm run rebuild && npm link",
+    "cli:unlink": "npm r {name} -g"
   },
   "keywords": [
     "lakutata",
