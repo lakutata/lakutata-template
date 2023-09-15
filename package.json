@@ -27,7 +27,7 @@
   "license": "{license}",
   "dependencies": {
     "commander": "^11.0.0",
-    "lakutata": "^0.1.16"
+    "lakutata": "^0.1.18"
   },
   "devDependencies": {
     "@types/node": "^18.17.0",
