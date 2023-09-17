@@ -1,4 +1,5 @@
 import {ApplicationOptions} from 'lakutata'
+import {APIServer} from '../components/APIServer'
 
 export default function (mode: 'development' | 'production'): ApplicationOptions {
     return {
@@ -13,7 +14,10 @@ export default function (mode: 'development' | 'production'): ApplicationOptions
             /* Config entries here */
         },
         components: {
-            /* Config components here */
+            api: {
+                class: APIServer,
+                port: 3000
+            }
         },
         controllers: [
             /* Config controllers here */
