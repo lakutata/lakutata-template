@@ -1,5 +1,5 @@
 import {Application, Component, Configurable, InjectApp} from 'lakutata'
-import {createServer, Server as RestifyServer} from 'restify'
+import Fastify, {FastifyInstance} from 'fastify'
 
 export class APIServer extends Component {
 
@@ -9,11 +9,11 @@ export class APIServer extends Component {
     @Configurable()
     protected readonly port: number
 
-    protected instance: RestifyServer
+    protected instance: FastifyInstance
 
     protected async init(): Promise<void> {
-        this.instance = createServer({
-            name: this.app.appName
-        })
+        this.instance = Fastify({})
+        await this.instance.listen({port: this.port})
+        this.log.info('%s listening at port %s', this.app.appName, this.port)
     }
 }

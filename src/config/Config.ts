@@ -27,6 +27,7 @@ export default function (mode: 'development' | 'production'): ApplicationOptions
         ],
         modules: {
             /* Config modules here */
-        }
+        },
+        bootstrap: ['api']
     }
 }
