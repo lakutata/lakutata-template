@@ -2,6 +2,7 @@ import {Application, BaseObject, Configurable, Exception, InjectApp, Time, Trans
 import {NotFoundException} from '../exceptions/NotFoundException'
 import {FastifyReply} from 'fastify'
 import {NonceStr} from 'lakutata/Helper'
+import {HttpException} from './HttpException'
 
 @Transient()
 export class Responder extends BaseObject {
@@ -29,11 +30,11 @@ export class Responder extends BaseObject {
     }
 
     protected errorResponse<ERROR extends Error | Exception>(error: ERROR) {
-        if (error instanceof Exception) {
-            if (error.errno === 'E_NO_MATCHED_CONTROLLER_ACTION_PATTERN') {
-                this.statusCode = 404
-                return this.errorResponse(new NotFoundException('Router \'{pathname}\' is not found', {pathname: this.pathname}))
-            }
+        if (error instanceof HttpException) {
+            this.statusCode = error.statusCode
+            return this.generateCommonResponseObject({}, error.errno, error.errMsg)
+        } else if (error instanceof Exception) {
+            if (error.errno === 'E_NO_MATCHED_CONTROLLER_ACTION_PATTERN') return this.errorResponse(new NotFoundException('Router \'{pathname}\' is not found', {pathname: this.pathname}))
             return this.generateCommonResponseObject({}, error.errno, error.errMsg)
         } else {
             return this.generateCommonResponseObject({}, -1, error.message)
