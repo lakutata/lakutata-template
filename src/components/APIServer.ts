@@ -23,7 +23,7 @@ export class APIServer extends Component {
 
     protected async init(): Promise<void> {
         this.instance = Fastify({})
-        this.instance.all('*', async (request: FastifyRequest, reply: FastifyReply) => {
+        this.instance.all('*', async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
             const pathname: string | null = ParseURL(request.url).pathname
             const responder: Responder = await this.module.get(Responder, {
                 pathname: pathname ? pathname : '/',
@@ -47,7 +47,7 @@ export class APIServer extends Component {
                     }
                 }))
             } catch (e) {
-                return responder.renderer(e, 500)
+                return responder.renderer(e)
             }
         })
         //todo register routers
