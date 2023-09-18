@@ -1,55 +1,52 @@
 import {Controller} from 'lakutata'
 import {All, Delete, Get, Head, Options, Patch, Post, Put} from '../lib/HttpActionDecorators'
+import {HttpActionInputPattern} from '../interfaces/HttpActionInputPattern'
 
 export class ExampleController extends Controller {
 
-    @Get('/')
-    public async get() {
+    @Get('/get')
+    public async get(inp: HttpActionInputPattern) {
         return 'recv method get'
     }
 
-    @Get('/*')
-    public async get1() {
+    @Get('/:id')
+    public async get1(inp: HttpActionInputPattern) {
+        console.log(inp)
         return 'recv method get1'
     }
 
-    @Get('*/666')
-    public async get11() {
-        return 'recv method get11'
-    }
-
-    @Head('/')
-    public async head() {
+    @Head('/head')
+    public async head(inp: HttpActionInputPattern) {
         return 'recv method head'
     }
 
-    @Post('/')
-    public async post() {
+    @Post('/post')
+    public async post(inp: HttpActionInputPattern) {
         return 'recv method post'
     }
 
-    @Put('/')
-    public async put() {
+    @Put('/put')
+    public async put(inp: HttpActionInputPattern) {
         return 'recv method put'
     }
 
-    @Delete('/')
-    public async delete() {
+    @Delete('/delete')
+    public async delete(inp: HttpActionInputPattern) {
         return 'recv method delete'
     }
 
-    @Options('/')
-    public async options() {
+    @Options('/options')
+    public async options(inp: HttpActionInputPattern) {
         return 'recv method options'
     }
 
-    @Patch('/')
-    public async patch() {
+    @Patch('/patch')
+    public async patch(inp: HttpActionInputPattern) {
         return 'recv method patch'
     }
 
     @All('/')
-    public async all() {
+    public async all(inp: HttpActionInputPattern) {
         return 'recv method all'
     }
 }

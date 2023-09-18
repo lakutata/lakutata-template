@@ -21,7 +21,7 @@
   "license": "{license}",
   "dependencies": {
     "fastify": "^4.23.2",
-    "lakutata": "^0.1.21"
+    "lakutata": "^0.1.23"
   },
   "devDependencies": {
     "@types/node": "^18.17.0",
