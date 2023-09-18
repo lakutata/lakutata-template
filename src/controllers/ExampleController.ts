@@ -1,7 +1,5 @@
 import {Controller} from 'lakutata'
 import {All, Delete, Get, Head, Options, Patch, Post, Put} from '../lib/HttpActionDecorators'
-import {createReadStream} from 'fs'
-import {GenerateDownloadReadStream} from '../lib/GenerateDownloadReadStream'
 
 export class ExampleController extends Controller {
 
