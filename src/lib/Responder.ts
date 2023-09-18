@@ -32,7 +32,7 @@ export class Responder extends BaseObject {
         }
     }
 
-    protected errorResponse<ERROR extends Error | Exception>(error: ERROR) {
+    protected errorResponse<T extends Error | Exception>(error: T) {
         if (error instanceof HttpException) {
             this.statusCode = error.statusCode
             return this.generateCommonResponseObject(null, error.errno, error.errMsg)
