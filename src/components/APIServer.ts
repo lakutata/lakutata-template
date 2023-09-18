@@ -3,15 +3,14 @@ import {
     Application,
     Component,
     Configurable,
-    Controller,
-    IConstructor,
-    Inject,
-    InjectApp
+    InjectApp, Time
 } from 'lakutata'
 import Fastify, {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify'
-import {Server as HttpServer} from 'http'
+import {IncomingMessage, Server as HttpServer} from 'http'
 import {parse as ParseURL} from 'url'
 import {Responder} from '../lib/Responder'
+import {hostname} from 'os'
+import {MD5} from 'lakutata/Hash'
 
 export class APIServer extends Component {
 
@@ -33,8 +32,10 @@ export class APIServer extends Component {
     }
 
     protected async init(): Promise<void> {
-        this.instance = Fastify({})
-
+        this.instance = Fastify({
+            ignoreDuplicateSlashes: true,
+            genReqId: (req: IncomingMessage) => MD5(`${hostname()}-${Time.now()}-${req.method}-${req.url}`)
+        })
         const actionMap: undefined | Map<[string, string], ActionPattern> = Reflect.get(APIServer, APIServer.API_ACTION_MAP_SYMBOL)
         actionMap?.forEach((actionPattern: ActionPattern, [method, pathname]) => {
             this.instance[method](pathname, async (request: FastifyRequest, reply: FastifyReply): Promise<any> => this.requestHandler(actionPattern, request, reply))
