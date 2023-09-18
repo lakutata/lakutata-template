@@ -1,5 +1,7 @@
 import {ApplicationOptions} from 'lakutata'
 import {APIServer} from '../components/APIServer'
+import {ExampleController} from '../controllers/ExampleController'
+import {Responder} from '../lib/Responder'
 
 export default function (mode: 'development' | 'production'): ApplicationOptions {
     return {
@@ -16,15 +18,12 @@ export default function (mode: 'development' | 'production'): ApplicationOptions
         components: {
             api: {
                 class: APIServer,
-                port: 3000
+                port: 3000,
+                host: '0.0.0.0'
             }
         },
-        controllers: [
-            /* Config controllers here */
-        ],
-        autoload: [
-            /* Config autoload items here */
-        ],
+        controllers: [ExampleController],
+        autoload: [Responder],
         modules: {
             /* Config modules here */
         },
