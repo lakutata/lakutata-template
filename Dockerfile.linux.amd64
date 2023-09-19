@@ -14,4 +14,4 @@ RUN rm -rf /project/dist
 RUN npm set audit false
 RUN npm set fund false
 RUN npm install --build-from-source
-CMD ["sh", "-c", "cd /project/ && USE_SYSTEM_FPM=true npm run pack:docker-linux-amd64 && cp dist/* /data/"]
+CMD ["sh", "-c", "cd /project/ && USE_SYSTEM_FPM=true npm run pack:linux-amd64 && cp -r dist/* /data/"]

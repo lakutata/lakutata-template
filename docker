@@ -1,46 +1,51 @@
 #!/usr/bin/env ts-node
 
-import fs from 'fs'
-
 async function runDockerBuilder(packageJson, crossPlatform, dockerfile, output) {
-    const {execa} = await import('execa')
-    const TIMESTAMP = Date.now()
-    const IMAGE_BASE_NAME = `build_image_${TIMESTAMP}_${Math.floor(Math.random() * 65535)}`
-    const IMAGE_VERSION = packageJson.version
-    console.info('Target platform:', crossPlatform)
-    console.info('Target image', IMAGE_BASE_NAME)
-    console.info('Target output directory:', output)
-    console.info('Building image for target platform...')
-    await execa('docker', ['buildx', 'build', '-f', `./${dockerfile}`, '-t', `${IMAGE_BASE_NAME}:${IMAGE_VERSION}`, `--platform=${crossPlatform}`, '.', '--load'])
-    // await shelljs.exec(`docker buildx build -f ./${dockerfile} -t ${IMAGE_BASE_NAME}:${IMAGE_VERSION} --platform=${crossPlatform} . --load`)
-    console.info('Build image finished')
-    console.info('Running built image...')
-    await execa('docker', ['run', '--privileged=true', '-v', `${output}:/data`, `${IMAGE_BASE_NAME}:${IMAGE_VERSION}`])
-    // await shelljs.exec(`docker run --privileged=true -v ${output}:/data ${IMAGE_BASE_NAME}:${IMAGE_VERSION}`)
-    console.info('Run image done')
-    console.info('Cleaning image...')
-    await execa('docker', ['rm', '-f', `$( docker ps -aq --no-trunc  --filter ancestor=${IMAGE_BASE_NAME}:${IMAGE_VERSION})`])
-    // await shelljs.exec(`docker rm -f $( docker ps -aq --no-trunc  --filter ancestor=${IMAGE_BASE_NAME}:${IMAGE_VERSION})`)
-    await execa('docker', ['rmi', '-f', `${IMAGE_BASE_NAME}:${IMAGE_VERSION}`])
-    // await shelljs.exec(`docker rmi -f ${IMAGE_BASE_NAME}:${IMAGE_VERSION}`)
-    console.info('Done!')
+    try {
+        const {execa, execaCommand} = await import('execa')
+        const TIMESTAMP = Date.now()
+        const IMAGE_BASE_NAME = `build_image_${TIMESTAMP}_${Math.floor(Math.random() * 65535)}`
+        const IMAGE_VERSION = packageJson.version
+        const execaOptions = {
+            stdout: process.stdout,
+            stderr: process.stderr
+        }
+        console.info('Target platform:', crossPlatform)
+        console.info('Target image', IMAGE_BASE_NAME)
+        console.info('Target output directory:', output)
+        console.info('Building image for target platform...')
+        await execa('docker', ['buildx', 'build', '-f', `./${dockerfile}`, '-t', `${IMAGE_BASE_NAME}:${IMAGE_VERSION}`, `--platform=${crossPlatform}`, '.', '--load'], execaOptions)
+        console.info('Build image finished')
+        console.info('Running built image...')
+        await execa('docker', ['run', '--privileged=true', '-v', `${output}:/data`, `${IMAGE_BASE_NAME}:${IMAGE_VERSION}`], execaOptions)
+        console.info('Run image done')
+        console.info('Cleaning image...')
+        await execaCommand(`docker rm -f $( docker ps -aq --no-trunc --filter ancestor=${IMAGE_BASE_NAME}:${IMAGE_VERSION})`, {shell: true})
+        await execa('docker', ['rmi', '-f', `${IMAGE_BASE_NAME}:${IMAGE_VERSION}`], execaOptions)
+        console.info('Done!')
+    } catch (error) {
+        // @ts-ignore
+        console.error('Build failed, ', error['message'])
+    }
 }
 
 require('commander').program
-    .option('-p, --platform <platform>', 'target platform', require('os').platform())
+    .option('-t, --target <target>', 'target platform', require('os').platform())
+    .option('-p, --platform <platform>', 'docker build platform', require('os').platform())
     .option('-a, --arch <arch>', 'target arch', require('os').arch())
     .option('-o, --output <output>', 'target arch', require('os').arch())
     .action(async options => {
         const os = require('os')
         const path = require('path')
         const fs = require('fs')
-        const platform = options.platform ? options.platform : os.platform()
+        const target = options.target ? options.target : os.platform()
         const arch = options.arch ? options.arch : os.arch()
+        const platform = options.platform ? options.platform : `${target}/${arch}`
         const output = path.resolve(process.cwd(), options.output ? options.output : './dist')
         if (!fs.existsSync(output)) fs.mkdirSync(output, {recursive: true})
-        const dockerfile = path.resolve(process.cwd(), `./Dockerfile.${platform}.${arch}`)
+        const dockerfile = `Dockerfile.${target}.${arch}`
         const packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname, './package.json')))
         if (!fs.existsSync(dockerfile)) throw new Error('No Dockerfile that meets the criteria was found.')
-        await runDockerBuilder(packageJson, `${platform}/${arch}`, dockerfile, output)
+        await runDockerBuilder(packageJson, platform, dockerfile, output)
     })
     .parse()

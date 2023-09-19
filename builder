@@ -8,15 +8,9 @@ require('commander').program
         const path = require('path')
         const {build, Platform, Arch} = require('electron-builder')
         const {Time} = require('lakutata')
-        const {TextTemplate} = require('lakutata/Helper')
         const AppConfig = require('./src/config/Config').default
         const BuilderConfig = require('./.builder.config').default
-        const packageJson = JSON.parse(TextTemplate(fs.readFileSync(path.resolve(__dirname, './package.json'), {encoding: 'utf-8'}), {
-            name: 'INVALID',
-            description: 'INVALID',
-            author: 'INVALID',
-            license: 'INVALID'
-        }, {ignoreMissing: true}))
+        const packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname, './package.json'), {encoding: 'utf-8'}))
         const platform = options.platform
         const architecture = (() => {
             switch (options.arch) {
@@ -27,6 +21,8 @@ require('commander').program
                 case'ia32':
                     return Arch.ia32
                 case 'x64':
+                    return Arch.x64
+                case 'amd64':
                     return Arch.x64
                 default:
                     return Arch.universal
@@ -45,14 +41,13 @@ require('commander').program
             }
         })()
         const appConfig = AppConfig('production')
-        console.log('TextTemplate(appConfig.name, {name: \'INVALID\'}, {ignoreMissing: true}):', TextTemplate(appConfig.name, {name: 'INVALID'}, {ignoreMissing: true}))
         await build({
             projectDir: path.resolve(__dirname),
             targets: targets,
             config: Object.assign({
-                appId: TextTemplate(appConfig.id, {id: 'INVALID'}, {ignoreMissing: true}),
-                productName: TextTemplate(appConfig.name, {name: 'INVALID'}, {ignoreMissing: true}),
-                copyright: `Copyright © ${new Time().format('YYYY')} ${TextTemplate(packageJson.author, {author: 'INVALID'}, {ignoreMissing: true})}`,
+                appId: appConfig.id,
+                productName: appConfig.name,
+                copyright: `Copyright © ${new Time().format('YYYY')} ${typeof packageJson.author === 'string' ? packageJson.author : packageJson.author.name}`,
                 icon: path.resolve(__dirname, './icon.png'),
                 files: [
                     'icon.png',

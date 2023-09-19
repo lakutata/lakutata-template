@@ -12,9 +12,12 @@
     "postinstall": "electron-builder install-app-deps",
     "test": "electron -r ./node_modules/ts-node/register src/tests/App.spec.ts",
     "pack:host": "ts-node ./builder",
-    "pack:docker-linux-amd64": "npm run rebuild && ts-node ./docker --output ./dist --targert linux --arch amd64 --platform linux/amd64",
-    "pack:docker-linux-arm64": "npm run rebuild && ts-node ./docker --output ./dist --targert linux --arch arm64 --platform linux/arm64",
-    "pack:docker-win32-amd64": "npm run rebuild && ts-node ./docker --output ./dist --targert win32 --arch amd64 --platform linux/amd64"
+    "pack:linux-amd64": "ts-node ./builder --platform linux --arch x64",
+    "pack:linux-arm64": "ts-node ./builder --platform linux --arch arm64",
+    "pack:win32-amd64": "ts-node ./builder --platform win32 --arch x64",
+    "pack:docker-linux-amd64": "npm run rebuild && ts-node ./docker --output ./dist --target linux --arch amd64 --platform linux/amd64",
+    "pack:docker-linux-arm64": "npm run rebuild && ts-node ./docker --output ./dist --target linux --arch arm64 --platform linux/arm64",
+    "pack:docker-win32-amd64": "npm run rebuild && ts-node ./docker --output ./dist --target win32 --arch amd64 --platform linux/amd64"
   },
   "keywords": [
     "lakutata"
@@ -22,7 +25,10 @@
   "engines": {
     "node": ">=18"
   },
-  "author": "{author}",
+  "author": {
+    "name": "{author}",
+    "email": "author@email.com"
+  },
   "license": "{license}",
   "dependencies": {
     "lakutata": "^0.1.36"

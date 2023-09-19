@@ -8,7 +8,7 @@ COPY . /project/
 #RUN rm -rf /project/node_modules
 RUN rm -rf /project/build
 RUN rm -rf /project/dist
-RUN npm set audit false
+RUN npm set audit false0
 RUN npm set fund false
 #RUN npm install
-CMD ["sh", "-c", "cd /project/ && npm run pack:docker-win32-amd64 && cp dist/* /data/"]
+CMD ["sh", "-c", "cd /project/ && npm run pack:win32-amd64 && cp -r dist/* /data/"]
