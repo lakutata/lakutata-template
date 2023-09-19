@@ -31,6 +31,10 @@ export class APIServer extends Component {
         return this.instance.server
     }
 
+    /**
+     * Initialization function
+     * @protected
+     */
     protected async init(): Promise<void> {
         this.instance = Fastify({
             ignoreDuplicateSlashes: true,

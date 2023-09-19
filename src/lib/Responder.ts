@@ -20,6 +20,13 @@ export class Responder extends BaseObject {
 
     protected statusCode: number = 200
 
+    /**
+     * Generate a common response object
+     * @param responseData
+     * @param code
+     * @param message
+     * @protected
+     */
     protected generateCommonResponseObject(responseData: any | null, code: number | string = 0, message: string = ''): Record<string, any> {
         this.reply.statusCode = this.statusCode
         return {
@@ -32,6 +39,11 @@ export class Responder extends BaseObject {
         }
     }
 
+    /**
+     * Error response handling
+     * @param error
+     * @protected
+     */
     protected errorResponse<T extends Error | Exception>(error: T) {
         if (error instanceof HttpException) {
             this.statusCode = error.statusCode
@@ -44,6 +56,10 @@ export class Responder extends BaseObject {
         }
     }
 
+    /**
+     * Process and render response data
+     * @param inp
+     */
     public renderer(inp: any): any {
         if (inp instanceof Readable) {
             let basename: string | undefined

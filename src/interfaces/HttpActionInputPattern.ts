@@ -1,5 +1,5 @@
 export interface HttpActionInputPattern {
-    actionId:string
+    actionId: string
     requestId: string
     method: string
     protocol: string
