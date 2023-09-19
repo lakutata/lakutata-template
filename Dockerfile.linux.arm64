@@ -1,0 +1,17 @@
+FROM node:lts-buster
+RUN apt-get update
+RUN apt-get install -y ruby-full
+RUN gem install fpm
+ENV USE_SYSTEM_FPM true
+RUN apt-get install --no-install-recommends -y libopenjp2-tools build-essential
+RUN apt-get install --no-install-recommends -y rpm
+RUN mkdir -p /project
+WORKDIR /project
+COPY . /project/
+RUN rm -rf /project/node_modules
+RUN rm -rf /project/build
+RUN rm -rf /project/dist
+RUN npm set audit false
+RUN npm set fund false
+RUN npm install --build-from-source
+CMD ["sh", "-c", "cd /project/ && USE_SYSTEM_FPM=true npm run pack:docker-linux-arm64 && cp dist/* /data/"]

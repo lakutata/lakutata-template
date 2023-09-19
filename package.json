@@ -4,14 +4,17 @@
   "description": "{description}",
   "main": "build/App.js",
   "scripts": {
-    "clean": "shx rm -rf ./build",
+    "clean": "shx rm -rf ./build && shx rm -rf ./dist",
     "build": "tsc",
     "rebuild": "npm run clean && npm run build",
     "prepare": "npm run compile",
     "compile": "npm run rebuild",
     "postinstall": "electron-builder install-app-deps",
     "test": "electron -r ./node_modules/ts-node/register src/tests/App.spec.ts",
-    "pack:host": ""
+    "pack:host": "ts-node ./builder",
+    "pack:docker-linux-amd64": "npm run rebuild && ts-node ./docker --output ./dist --targert linux --arch amd64 --platform linux/amd64",
+    "pack:docker-linux-arm64": "npm run rebuild && ts-node ./docker --output ./dist --targert linux --arch arm64 --platform linux/arm64",
+    "pack:docker-win32-amd64": "npm run rebuild && ts-node ./docker --output ./dist --targert win32 --arch amd64 --platform linux/amd64"
   },
   "keywords": [
     "lakutata"
@@ -28,9 +31,11 @@
     "@types/node": "^18.17.0",
     "@typescript-eslint/eslint-plugin": "^6.7.0",
     "@typescript-eslint/parser": "^6.7.0",
+    "commander": "^11.0.0",
     "electron": "^26.2.1",
     "electron-builder": "^24.6.4",
     "eslint": "^8.49.0",
+    "execa": "^8.0.1",
     "shx": "^0.3.4",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"

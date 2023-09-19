@@ -1,0 +1,14 @@
+FROM electronuserland/builder:wine
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - &&\
+    apt-get install -y nodejs
+RUN rm -rf /usr/local/bin/node
+RUN mkdir -p /project
+WORKDIR /project
+COPY . /project/
+#RUN rm -rf /project/node_modules
+RUN rm -rf /project/build
+RUN rm -rf /project/dist
+RUN npm set audit false
+RUN npm set fund false
+#RUN npm install
+CMD ["sh", "-c", "cd /project/ && npm run pack:docker-win32-amd64 && cp dist/* /data/"]
