@@ -27,7 +27,7 @@
   },
   "author": {
     "name": "{author}",
-    "email": "author@email.com"
+    "email": "{author}@email.com"
   },
   "license": "{license}",
   "dependencies": {
