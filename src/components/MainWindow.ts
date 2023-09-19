@@ -53,7 +53,6 @@ export class MainWindow extends Component {
             this.height = height
             this.setInternalProperty('ActiveResizing', false)
         })
-
     }
 
     /**

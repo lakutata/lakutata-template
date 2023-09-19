@@ -33,10 +33,6 @@ export default function (mode: 'development' | 'production'): ApplicationOptions
             'mainWindow',
             async (app: Application): Promise<void> => {
                 const win = await app.get<MainWindow>('mainWindow')
-                setTimeout(()=>{
-                    win.width = 1024
-                    win.height = 768
-                },5000)
             }
         ]
     }
