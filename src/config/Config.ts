@@ -1,4 +1,5 @@
-import {ApplicationOptions} from 'lakutata'
+import {Application, ApplicationOptions} from 'lakutata'
+import {MainWindow} from '../components/MainWindow'
 
 export default function (mode: 'development' | 'production'): ApplicationOptions {
     return {
@@ -13,7 +14,11 @@ export default function (mode: 'development' | 'production'): ApplicationOptions
             /* Config entries here */
         },
         components: {
-            /* Config components here */
+            mainWindow: {
+                class: MainWindow,
+                width: 800,
+                height: 600
+            }
         },
         controllers: [
             /* Config controllers here */
@@ -23,6 +28,16 @@ export default function (mode: 'development' | 'production'): ApplicationOptions
         ],
         modules: {
             /* Config modules here */
-        }
+        },
+        bootstrap: [
+            'mainWindow',
+            async (app: Application): Promise<void> => {
+                const win = await app.get<MainWindow>('mainWindow')
+                setTimeout(()=>{
+                    win.width = 1024
+                    win.height = 768
+                },5000)
+            }
+        ]
     }
 }

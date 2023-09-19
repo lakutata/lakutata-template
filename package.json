@@ -9,7 +9,7 @@
     "rebuild": "npm run clean && npm run build",
     "prepare": "npm run compile",
     "compile": "npm run rebuild",
-    "test": "ts-node src/tests/App.spec.ts"
+    "test": "electron -r ./node_modules/ts-node/register src/tests/App.spec.ts"
   },
   "keywords": [
     "lakutata"
@@ -26,6 +26,7 @@
     "@types/node": "^18.17.0",
     "@typescript-eslint/eslint-plugin": "^6.7.0",
     "@typescript-eslint/parser": "^6.7.0",
+    "electron": "^26.2.1",
     "eslint": "^8.49.0",
     "shx": "^0.3.4",
     "ts-node": "^10.9.1",
